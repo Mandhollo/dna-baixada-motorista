@@ -1,0 +1,31 @@
+{
+  "name": "dna-baixada-motorista",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.8",
+    "@tailwindcss/postcss": "^4.3.0",
+    "framer-motion": "^12.12.1",
+    "leaflet": "^1.9.4",
+    "next": "^15.3.3",
+    "postcss": "^8.5.15",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "react-leaflet": "^5.0.0",
+    "tailwindcss": "^4.3.0"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.18",
+    "@types/node": "^22.15.21",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "typescript": "^5.8.3"
+  }
+}

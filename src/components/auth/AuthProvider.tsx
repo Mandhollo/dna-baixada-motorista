@@ -31,6 +31,7 @@ interface AuthContextType {
   motorista: Motorista | null;
   supabase: SupabaseClient;
   loading: boolean;
+  isMotorista: boolean;
   signOut: () => Promise<void>;
   refreshProfile: () => Promise<void>;
 }
@@ -41,6 +42,7 @@ const AuthContext = createContext<AuthContextType>({
   motorista: null,
   supabase: null as unknown as SupabaseClient,
   loading: true,
+  isMotorista: false,
   signOut: async () => {},
   refreshProfile: async () => {},
 });
@@ -128,6 +130,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         motorista,
         supabase,
         loading,
+        isMotorista: profile?.role === "motorista" || !!motorista,
         signOut,
         refreshProfile,
       }}

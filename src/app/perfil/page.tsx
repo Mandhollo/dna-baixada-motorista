@@ -1,15 +1,19 @@
 "use client";
 
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { motion } from "framer-motion";
 
 export default function PerfilPage() {
   const { user, profile, motorista, supabase, loading, refreshProfile } = useAuth();
+  useMotoristaGuard();
   const router = useRouter();
   const [editando, setEditando] = useState(false);
   const [salvando, setSalvando] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
   const [sucesso, setSucesso] = useState(false);
 
   const [form, setForm] = useState({
@@ -69,7 +73,7 @@ export default function PerfilPage() {
       await refreshProfile();
       setTimeout(() => setSucesso(false), 3000);
     } catch {
-      alert("Erro ao salvar. Tente novamente.");
+      setErro("Erro ao salvar. Tente novamente.");
     } finally {
       setSalvando(false);
     }
@@ -122,11 +126,15 @@ export default function PerfilPage() {
         <div className="flex flex-col items-center py-4">
           <div className="w-24 h-24 bg-[#1e293b] rounded-full flex items-center justify-center border-4 border-[#334155] mb-3">
             {profile?.foto_url ? (
-              <img
-                src={profile.foto_url}
-                alt="Foto"
-                className="w-full h-full rounded-full object-cover"
-              />
+              <div className="w-full h-full rounded-full overflow-hidden">
+                <Image
+                  src={profile.foto_url}
+                  alt="Foto do motorista"
+                  className="w-full h-full object-cover"
+                  width={96}
+                  height={96}
+                />
+              </div>
             ) : (
               <span className="text-4xl">👤</span>
             )}

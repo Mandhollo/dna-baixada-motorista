@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -13,6 +14,7 @@ interface GanhosSemanal {
 
 export default function GanhosPage() {
   const { user, supabase, loading } = useAuth();
+  useMotoristaGuard();
   const router = useRouter();
   const [ganhosSemanal, setGanhosSemanal] = useState<GanhosSemanal[]>([]);
   const [ganhosMensal, setGanhosMensal] = useState(0);

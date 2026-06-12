@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
@@ -20,6 +21,7 @@ type Filtro = "hoje" | "semana" | "mes" | "tudo";
 
 export default function HistoricoPage() {
   const { user, supabase, loading } = useAuth();
+  useMotoristaGuard();
   const router = useRouter();
   const [corridas, setCorridas] = useState<CorridaHistorico[]>([]);
   const [filtro, setFiltro] = useState<Filtro>("hoje");

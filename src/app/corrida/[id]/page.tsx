@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
@@ -55,12 +56,14 @@ const STATUS_FLOW: Record<string, { next: string; label: string; color: string }
 
 export default function CorridaPage() {
   const { user, supabase, loading } = useAuth();
+  useMotoristaGuard();
   const router = useRouter();
   const params = useParams();
   const corridaId = params.id as string;
 
   const [corrida, setCorrida] = useState<Corrida | null>(null);
   const [updating, setUpdating] = useState(false);
+  const [erro, setErro] = useState<string | null>(null);
   const [mapReady, setMapReady] = useState(false);
 
   useEffect(() => {
@@ -99,7 +102,7 @@ export default function CorridaPage() {
           if (payload.new) {
             setCorrida((prev) => prev ? { ...prev, ...payload.new } as Corrida : prev);
             if (payload.new.status === "cancelada") {
-              alert("Corrida cancelada pelo passageiro");
+              setErro("Corrida cancelada pelo passageiro");
               router.push("/dashboard");
             }
           }
@@ -124,7 +127,7 @@ export default function CorridaPage() {
         setTimeout(() => router.push("/dashboard"), 1500);
       }
     } else {
-      alert("Erro ao atualizar status");
+      setErro("Erro ao atualizar status. Tente novamente.");
     }
     setUpdating(false);
   };

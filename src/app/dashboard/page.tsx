@@ -1,6 +1,7 @@
 "use client";
 
 import { useAuth } from "@/components/auth/AuthProvider";
+import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,9 +22,11 @@ interface CorridaDisponivel {
 
 export default function DashboardPage() {
   const { user, profile, motorista, supabase, loading, signOut } = useAuth();
+  useMotoristaGuard();
   const router = useRouter();
   const [disponivel, setDisponivel] = useState(false);
   const [corridas, setCorridas] = useState<CorridaDisponivel[]>([]);
+  const [erro, setErro] = useState<string | null>(null);
   const [stats, setStats] = useState({ corridasHoje: 0, ganhosHoje: 0, avaliacao: 0 });
   const [aceitandoId, setAceitandoId] = useState<string | null>(null);
   const [corridaAtiva, setCorridaAtiva] = useState<string | null>(null);
@@ -151,7 +154,7 @@ export default function DashboardPage() {
     if (!error) {
       router.push(`/corrida/${corridaId}`);
     } else {
-      alert("Erro ao aceitar corrida. Tente novamente.");
+      setErro("Erro ao aceitar corrida. Tente novamente.");
       fetchCorridas();
     }
     setAceitandoId(null);

@@ -3,4 +3,4 @@ node_modules
 .git
 .env.local
 *.tsbuildinfo
-.vercel
+package-lock.json

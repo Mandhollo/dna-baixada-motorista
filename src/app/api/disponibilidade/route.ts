@@ -21,7 +21,7 @@ export async function PATCH(request: Request) {
   const { error } = await supabase
     .from("motoristas")
     .update({ disponivel })
-    .eq("user_id", user.id);
+    .eq("id", user.id);
 
   if (error) {
     return NextResponse.json({ error: error.message }, { status: 500 });

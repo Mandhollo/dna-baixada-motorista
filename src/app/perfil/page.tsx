@@ -62,7 +62,7 @@ export default function PerfilPage() {
           veiculo_lugares: form.veiculo_lugares,
           cnh: form.cnh,
         })
-        .eq("user_id", user.id);
+        .eq("id", user.id);
 
       setSucesso(true);
       setEditando(false);

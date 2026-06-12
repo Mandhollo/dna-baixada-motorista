@@ -39,22 +39,22 @@ export default function GanhosPage() {
     inicioHoje.setHours(0, 0, 0, 0);
     const { data: hoje } = await supabase
       .from("corridas")
-      .select("preco")
+      .select("preco_final,preco_estimado")
       .eq("motorista_id", user.id)
       .eq("status", "finalizada")
       .gte("created_at", inicioHoje.toISOString());
-    setGanhosHoje(hoje?.reduce((acc: number, c: any) => acc + (c.preco || 0), 0) || 0);
+    setGanhosHoje(hoje?.reduce((acc: number, c: any) => acc + (c.preco_final ?? c.preco_estimado ?? 0), 0) || 0);
 
     // Ganhos mensal
     const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
     const { data: mes } = await supabase
       .from("corridas")
-      .select("preco")
+      .select("preco_final,preco_estimado")
       .eq("motorista_id", user.id)
       .eq("status", "finalizada")
       .gte("created_at", inicioMes.toISOString());
 
-    const totalMes = mes?.reduce((acc: number, c: any) => acc + (c.preco || 0), 0) || 0;
+    const totalMes = mes?.reduce((acc: number, c: any) => acc + (c.preco_final ?? c.preco_estimado ?? 0), 0) || 0;
     setGanhosMensal(totalMes);
     setCorridasMes(mes?.length || 0);
 
@@ -69,13 +69,13 @@ export default function GanhosPage() {
 
       const { data: semData } = await supabase
         .from("corridas")
-        .select("preco")
+        .select("preco_final,preco_estimado")
         .eq("motorista_id", user.id)
         .eq("status", "finalizada")
         .gte("created_at", inicioSemana.toISOString())
         .lt("created_at", fimSemana.toISOString());
 
-      const total = semData?.reduce((acc: number, c: any) => acc + (c.preco || 0), 0) || 0;
+      const total = semData?.reduce((acc: number, c: any) => acc + (c.preco_final ?? c.preco_estimado ?? 0), 0) || 0;
       semanas.push({
         semana: `${inicioSemana.getDate()}/${inicioSemana.getMonth() + 1}`,
         total,

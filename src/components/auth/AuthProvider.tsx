@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, useCallback } from "react";
+import { createContext, useContext, useEffect, useState, useCallback, useMemo } from "react";
 import { createClient } from "@/lib/supabase";
 import type { User } from "@supabase/supabase-js";
 import type { SupabaseClient } from "@supabase/supabase-js";
@@ -16,7 +16,6 @@ interface Profile {
 
 interface Motorista {
   id: string;
-  user_id: string;
   cnh: string;
   veiculo_modelo: string;
   veiculo_placa: string;
@@ -53,7 +52,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null);
   const [motorista, setMotorista] = useState<Motorista | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
+  const supabase = useMemo(() => createClient(), []);
 
   const loadProfile = useCallback(
     async (userId: string) => {
@@ -68,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data: mot } = await supabase
         .from("motoristas")
         .select("*")
-        .eq("user_id", userId)
+        .eq("id", userId)
         .single();
 
       if (mot) setMotorista(mot as Motorista);

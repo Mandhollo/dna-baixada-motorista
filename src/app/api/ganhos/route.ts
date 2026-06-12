@@ -19,7 +19,7 @@ export async function GET() {
   inicioHoje.setHours(0, 0, 0, 0);
   const { data: hoje } = await supabase
     .from("corridas")
-    .select("preco")
+    .select("preco_final,preco_estimado")
     .eq("motorista_id", user.id)
     .eq("status", "finalizada")
     .gte("created_at", inicioHoje.toISOString());
@@ -29,7 +29,7 @@ export async function GET() {
   inicioSemana.setDate(inicioSemana.getDate() - 7);
   const { data: semana } = await supabase
     .from("corridas")
-    .select("preco")
+    .select("preco_final,preco_estimado")
     .eq("motorista_id", user.id)
     .eq("status", "finalizada")
     .gte("created_at", inicioSemana.toISOString());
@@ -38,13 +38,13 @@ export async function GET() {
   const inicioMes = new Date(agora.getFullYear(), agora.getMonth(), 1);
   const { data: mes } = await supabase
     .from("corridas")
-    .select("preco")
+    .select("preco_final,preco_estimado")
     .eq("motorista_id", user.id)
     .eq("status", "finalizada")
     .gte("created_at", inicioMes.toISOString());
 
   const sum = (arr: any[] | null) =>
-    arr?.reduce((acc: number, c: any) => acc + (c.preco || 0), 0) || 0;
+    arr?.reduce((acc: number, c: any) => acc + (c.preco_final ?? c.preco_estimado ?? 0), 0) || 0;
 
   return NextResponse.json({
     hoje: sum(hoje),

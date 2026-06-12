@@ -21,7 +21,7 @@ export async function GET() {
   const { data: motorista } = await supabase
     .from("motoristas")
     .select("*")
-    .eq("user_id", user.id)
+    .eq("id", user.id)
     .single();
 
   return NextResponse.json({ profile, motorista });
@@ -55,7 +55,7 @@ export async function PATCH(request: Request) {
     "veiculo_placa",
     "veiculo_cor",
     "veiculo_lugares",
-    "cnh",
+    "cnh_numero",
   ];
 
   for (const field of allowedFields) {
@@ -68,7 +68,7 @@ export async function PATCH(request: Request) {
     await supabase
       .from("motoristas")
       .update(motoristaFields)
-      .eq("user_id", user.id);
+      .eq("id", user.id);
   }
 
   return NextResponse.json({ success: true });

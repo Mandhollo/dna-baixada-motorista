@@ -67,13 +67,13 @@ export default function DashboardPage() {
 
       const { data: corridasHoje } = await supabase
         .from("corridas")
-        .select("preco")
+        .select("preco_final,preco_estimado")
         .eq("motorista_id", user.id)
         .eq("status", "finalizada")
         .gte("created_at", hoje.toISOString());
 
       const totalCorridas = corridasHoje?.length || 0;
-      const totalGanhos = corridasHoje?.reduce((acc: number, c: any) => acc + (c.preco || 0), 0) || 0;
+      const totalGanhos = corridasHoje?.reduce((acc: number, c: any) => acc + (c.preco_final ?? c.preco_estimado ?? 0), 0) || 0;
       setStats({ corridasHoje: totalCorridas, ganhosHoje: totalGanhos, avaliacao: motorista?.avaliacao || 0 });
     };
 
@@ -132,7 +132,7 @@ export default function DashboardPage() {
     await supabase
       .from("motoristas")
       .update({ disponivel: novoValor })
-      .eq("user_id", user.id);
+      .eq("id", user.id);
 
     if (!novoValor) setCorridas([]);
     setToggling(false);

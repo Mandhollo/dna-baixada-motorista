@@ -1,25 +1,28 @@
 "use client";
 
+// Force dynamic rendering — prevents static cache bypass of middleware auth
+export const dynamic = "force-dynamic";
+
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter, useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
-import dynamic from "next/dynamic";
+import dynamicImport from "next/dynamic";
 
-const MapContainer = dynamic(
+const MapContainer = dynamicImport(
   () => import("react-leaflet").then((mod) => mod.MapContainer),
   { ssr: false }
 );
-const TileLayer = dynamic(
+const TileLayer = dynamicImport(
   () => import("react-leaflet").then((mod) => mod.TileLayer),
   { ssr: false }
 );
-const Marker = dynamic(
+const Marker = dynamicImport(
   () => import("react-leaflet").then((mod) => mod.Marker),
   { ssr: false }
 );
-const Popup = dynamic(
+const Popup = dynamicImport(
   () => import("react-leaflet").then((mod) => mod.Popup),
   { ssr: false }
 );

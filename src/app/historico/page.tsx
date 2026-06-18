@@ -1,5 +1,8 @@
 "use client";
 
+// Force dynamic rendering — prevents static cache bypass of middleware auth
+export const dynamic = "force-dynamic";
+
 import { useAuth } from "@/components/auth/AuthProvider";
 import { useMotoristaGuard } from "@/hooks/useMotoristaGuard";
 import { useRouter } from "next/navigation";
